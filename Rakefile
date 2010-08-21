@@ -51,6 +51,20 @@ Spec::Rake::SpecTask.new('specdoc') do |t|
   t.out         = 'specdoc.rd'
 end
 
+desc 'Build the YARD HTML files'
+task :yard do
+  sh 'bin/yardoc -o html --title Walrat'
+end
+
+desc 'Upload YARD HTML'
+task :upload_yard => :yard do
+  require 'yaml'
+  config = YAML.load_file('.config.yml')
+  raise ':yardoc_host not configured' unless config.has_key?(:yardoc_host)
+  raise ':yardoc_path not configured' unless config.has_key?(:yardoc_path)
+  sh "scp -r html/* #{config[:yardoc_host]}:#{config[:yardoc_path]}"
+end
+
 BUILT_GEM_DEPENDENCIES = Dir[
   'walrat.gemspec',
   'lib/**/*.rb'
