@@ -21,7 +21,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require File.expand_path('spec_helper', File.dirname(__FILE__))
 
 describe Walrat::StringEnumerator do
   it 'raises an ArgumentError if initialized with nil' do

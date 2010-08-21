@@ -20,19 +20,12 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require File.expand_path('spec_helper', File.dirname(__FILE__))
 
-describe Walrat::SymbolParslet do
-  it 'should raise an ArgumentError if initialized with nil' do
+describe 'creating a continuation wrapper exception' do
+  it 'complains if initialized with nil' do
     expect do
-      Walrat::SymbolParslet.new nil
-    end.to raise_error(ArgumentError, /nil symbol/)
-  end
-
-  it 'should be able to compare symbol parslets for equality' do
-    :foo.to_parseable.should eql(:foo.to_parseable)           # equal
-    :foo.to_parseable.should_not eql(:bar.to_parseable)       # different
-    :foo.to_parseable.should_not eql(:Foo.to_parseable)       # differing only in case
-    :foo.to_parseable.should_not eql(/foo/)                   # totally different classes
+      Walrat::ContinuationWrapperException.new nil
+    end.to raise_error(ArgumentError, /nil continuation/)
   end
 end

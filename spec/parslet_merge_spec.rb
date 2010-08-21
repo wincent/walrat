@@ -20,20 +20,20 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require File.expand_path('../spec_helper.rb', File.dirname(__FILE__))
+require File.expand_path('spec_helper', File.dirname(__FILE__))
 
-describe Walrat::AndPredicate do
-  subject { Walrat::AndPredicate.new('foo') }
-
-  it 'complains on trying to parse a nil string' do
-    expect do
-      subject.parse nil
-    end.to raise_error(ArgumentError)
+describe Walrat::ParsletMerge do
+  it 'should be able to compare for equality' do
+    Walrat::ParsletMerge.new('foo', 'bar').should eql(Walrat::ParsletMerge.new('foo', 'bar'))
+    Walrat::ParsletMerge.new('foo', 'bar').should_not eql(Walrat::ParsletOmission.new('foo')) # wrong class
   end
 
-  it 'is able to compare for equality' do
-    should eql(Walrat::AndPredicate.new('foo'))     # same
-    should_not eql(Walrat::AndPredicate.new('bar')) # different
-    should_not eql(Walrat::Predicate.new('foo'))    # same but different class
+  it 'ParsletMerge and ParsletSequence hashs should not match even if created using the same parseable instances' do
+    parseable1 = 'foo'.to_parseable
+    parseable2 = 'bar'.to_parseable
+    p1 = Walrat::ParsletMerge.new(parseable1, parseable2)
+    p2 = Walrat::ParsletSequence.new(parseable1, parseable2)
+    p1.hash.should_not == p2.hash
+    p1.should_not eql(p2)
   end
 end

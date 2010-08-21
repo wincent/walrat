@@ -20,7 +20,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require File.expand_path('spec_helper', File.dirname(__FILE__))
 
 describe 'using shorthand operators to combine String, Symbol and Regexp parsers' do
   it 'should be able to chain a String and a Regexp together' do

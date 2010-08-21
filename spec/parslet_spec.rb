@@ -20,12 +20,14 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require File.expand_path('../../spec_helper', File.dirname(__FILE__))
+require File.expand_path('spec_helper', File.dirname(__FILE__))
 
-describe 'proc additions' do
-  it 'responds to "to_parseable", "parse" and "memoizing_parse"' do
-    proc = lambda { |string, options| 'foo' }.to_parseable
-    proc.parse('bar').should == 'foo'
-    proc.memoizing_parse('bar').should == 'foo'
+describe Walrat::Parslet do
+  it 'complains if sent "parse" message' do
+    # Parslet is an abstract superclass, "parse" is the responsibility of the
+    # subclasses
+    expect do
+      Walrat::Parslet.new.parse('bar')
+    end.to raise_error(NotImplementedError)
   end
 end

@@ -20,36 +20,46 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require File.expand_path('spec_helper', File.dirname(__FILE__))
 
-describe Walrat::ParsletChoice do
+describe Walrat::ProcParslet do
   before do
-    @p1 = 'foo'.to_parseable
-    @p2 = 'bar'.to_parseable
+    @parslet = lambda do |string, options|
+      if string == 'foobar'
+        string
+      else
+        raise Walrat::ParseError.new("expected foobar but got '#{string}'")
+      end
+    end.to_parseable
   end
 
-  it 'hashes should be the same if initialized with the same parseables' do
-    Walrat::ParsletChoice.new(@p1, @p2).hash.should == Walrat::ParsletChoice.new(@p1, @p2).hash
-    Walrat::ParsletChoice.new(@p1, @p2).should eql(Walrat::ParsletChoice.new(@p1, @p2))
+  it 'raises an ArgumentError if initialized with nil' do
+    expect do
+      Walrat::ProcParslet.new nil
+    end.to raise_error(ArgumentError, /nil proc/)
   end
 
-  it 'hashes should (ideally) be different if initialized with different parseables' do
-    Walrat::ParsletChoice.new(@p1, @p2).hash.should_not == Walrat::ParsletChoice.new('baz'.to_parseable, 'abc'.to_parseable).hash
-    Walrat::ParsletChoice.new(@p1, @p2).should_not eql(Walrat::ParsletChoice.new('baz'.to_parseable, 'abc'.to_parseable))
+  it 'complains if asked to parse nil' do
+    expect do
+      @parslet.parse nil
+    end.to raise_error(ArgumentError, /nil string/)
   end
 
-  it 'hashes should be different compared to other similar classes even if initialized with the same parseables' do
-    Walrat::ParsletChoice.new(@p1, @p2).hash.should_not == Walrat::ParsletSequence.new(@p1, @p2).hash
-    Walrat::ParsletChoice.new(@p1, @p2).should_not eql(Walrat::ParsletSequence.new(@p1, @p2))
+  it 'raises Walrat::ParseError if unable to parse' do
+    expect do
+      @parslet.parse 'bar'
+    end.to raise_error(Walrat::ParseError)
   end
 
-  it 'should be able to use Parslet Choice instances as keys in a hash' do
-    hash = {}
-    key1 = Walrat::ParsletChoice.new(@p1, @p2)
-    key2 = Walrat::ParsletChoice.new('baz'.to_parseable, 'abc'.to_parseable)
-    hash[:key1] = 'foo'
-    hash[:key2] = 'bar'
-    hash[:key1].should == 'foo'
-    hash[:key2].should == 'bar'
+  it 'returns a parsed value if able to parse' do
+    @parslet.parse('foobar').should == 'foobar'
+  end
+
+  it 'can be compared for equality' do
+    # in practice only parslets created with the exact same Proc instance will
+    # be eql because Proc returns different hashes for each
+    @parslet.should eql(@parslet.clone)
+    @parslet.should eql(@parslet.dup)
+    @parslet.should_not eql(lambda { nil }.to_parseable)
   end
 end

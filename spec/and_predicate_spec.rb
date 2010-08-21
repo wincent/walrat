@@ -20,33 +20,20 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require File.expand_path('../../spec_helper', File.dirname(__FILE__))
+require File.expand_path('spec_helper', File.dirname(__FILE__))
 
-# For more detailed specification of the RegexpParslet behaviour see
-# regexp_parslet_spec.rb.
-describe 'using shorthand to get RegexpParslets from Regexp instances' do
-  context 'chaining two Regexps with the "&" operator' do
-    it 'yields a two-element sequence' do
-      sequence = /foo/ & /bar/
-      sequence.parse('foobar').map { |each| each.to_s }.should == ['foo', 'bar']
-    end
+describe Walrat::AndPredicate do
+  subject { Walrat::AndPredicate.new('foo') }
+
+  it 'complains on trying to parse a nil string' do
+    expect do
+      subject.parse nil
+    end.to raise_error(ArgumentError)
   end
 
-  context 'chaining three Regexps with the "&" operator' do
-    it 'yields a three-element sequence' do
-      sequence = /foo/ & /bar/ & /\.\.\./
-      sequence.parse('foobar...').map { |each| each.to_s }.should == ['foo', 'bar', '...']
-    end
-  end
-
-  context 'alternating two Regexps with the "|" operator' do
-    it 'yields a MatchDataWrapper' do
-      sequence = /foo/ | /bar/
-      sequence.parse('foobar').to_s.should == 'foo'
-      sequence.parse('bar...').to_s.should == 'bar'
-      expect do
-        sequence.parse('no match')
-      end.to raise_error(Walrat::ParseError)
-    end
+  it 'is able to compare for equality' do
+    should eql(Walrat::AndPredicate.new('foo'))     # same
+    should_not eql(Walrat::AndPredicate.new('bar')) # different
+    should_not eql(Walrat::Predicate.new('foo'))    # same but different class
   end
 end

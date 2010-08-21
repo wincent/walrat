@@ -22,28 +22,31 @@
 
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
-describe Walrat::MatchDataWrapper do
-  before do
-    'hello agent' =~ /(\w+)(\s+)(\w+)/
-    @match        = Walrat::MatchDataWrapper.new($~)
+# For more detailed specification of the RegexpParslet behaviour see
+# regexp_parslet_spec.rb.
+describe 'using shorthand to get RegexpParslets from Regexp instances' do
+  context 'chaining two Regexps with the "&" operator' do
+    it 'yields a two-element sequence' do
+      sequence = /foo/ & /bar/
+      sequence.parse('foobar').map { |each| each.to_s }.should == ['foo', 'bar']
+    end
   end
 
-  it 'raises if initialized with nil' do
-    expect do
-      Walrat::MatchDataWrapper.new nil
-    end.to raise_error(ArgumentError, /nil data/)
+  context 'chaining three Regexps with the "&" operator' do
+    it 'yields a three-element sequence' do
+      sequence = /foo/ & /bar/ & /\.\.\./
+      sequence.parse('foobar...').map { |each| each.to_s }.should == ['foo', 'bar', '...']
+    end
   end
 
-  specify 'stored match data persists after multiple matches are executed' do
-    original      = @match.match_data     # store original value
-    'foo'         =~ /foo/                # clobber $~
-    @match.match_data.should == original  # confirm stored value still intact
-  end
-
-  specify 'comparisons with Strings work without having to call "to_s"' do
-    @match.should         == 'hello agent'  # normal order
-    'hello agent'.should  == @match         # reverse order
-    @match.should_not     == 'foobar'       # inverse test sense (not equal)
-    'foobar'.should_not   == @match         # reverse order
+  context 'alternating two Regexps with the "|" operator' do
+    it 'yields a MatchDataWrapper' do
+      sequence = /foo/ | /bar/
+      sequence.parse('foobar').to_s.should == 'foo'
+      sequence.parse('bar...').to_s.should == 'bar'
+      expect do
+        sequence.parse('no match')
+      end.to raise_error(Walrat::ParseError)
+    end
   end
 end

@@ -20,14 +20,8 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require File.expand_path('spec_helper', File.dirname(__FILE__))
 
-describe Walrat::Parslet do
-  it 'complains if sent "parse" message' do
-    # Parslet is an abstract superclass, "parse" is the responsibility of the
-    # subclasses
-    expect do
-      Walrat::Parslet.new.parse('bar')
-    end.to raise_error(NotImplementedError)
-  end
+describe Walrat::Node do
+  it 'has behavior'
 end

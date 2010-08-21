@@ -20,21 +20,19 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require File.expand_path('spec_helper', File.dirname(__FILE__))
 
-describe Walrat::NotPredicate do
-  it 'complains on trying to parse a nil string' do
+describe Walrat::SymbolParslet do
+  it 'should raise an ArgumentError if initialized with nil' do
     expect do
-      Walrat::NotPredicate.new('irrelevant').parse nil
-    end.to raise_error(ArgumentError, /nil string/)
+      Walrat::SymbolParslet.new nil
+    end.to raise_error(ArgumentError, /nil symbol/)
   end
 
-  it 'can be compared for equality' do
-    Walrat::NotPredicate.new('foo').
-      should eql(Walrat::NotPredicate.new('foo'))      # same
-    Walrat::NotPredicate.new('foo').
-      should_not eql(Walrat::NotPredicate.new('bar'))  # different
-    Walrat::NotPredicate.new('foo').
-      should_not eql(Walrat::Predicate.new('foo'))     # different class
+  it 'should be able to compare symbol parslets for equality' do
+    :foo.to_parseable.should eql(:foo.to_parseable)           # equal
+    :foo.to_parseable.should_not eql(:bar.to_parseable)       # different
+    :foo.to_parseable.should_not eql(:Foo.to_parseable)       # differing only in case
+    :foo.to_parseable.should_not eql(/foo/)                   # totally different classes
   end
 end

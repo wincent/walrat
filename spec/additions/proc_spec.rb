@@ -22,6 +22,10 @@
 
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
-describe Walrat::Node do
-  it 'has behavior'
+describe 'proc additions' do
+  it 'responds to "to_parseable", "parse" and "memoizing_parse"' do
+    proc = lambda { |string, options| 'foo' }.to_parseable
+    proc.parse('bar').should == 'foo'
+    proc.memoizing_parse('bar').should == 'foo'
+  end
 end
