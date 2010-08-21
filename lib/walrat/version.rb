@@ -21,6 +21,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 module Walrat
-  VERSION   = '0.0.0.99'
+  VERSION   = '0.1'
   COPYRIGHT = 'Copyright 2007-2010 Wincent Colaiuta'
 end # module Walrat
