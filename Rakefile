@@ -24,7 +24,7 @@ require 'rake'
 require 'rubygems'
 require 'spec/rake/spectask'
 require 'spec/rake/verify_rcov'
-require File.expand_path('lib/walrus/version', File.dirname(__FILE__))
+require File.expand_path('lib/walrat/version', File.dirname(__FILE__))
 
 desc 'Run specs with coverage'
 Spec::Rake::SpecTask.new('coverage') do |t|
@@ -52,14 +52,13 @@ Spec::Rake::SpecTask.new('specdoc') do |t|
 end
 
 BUILT_GEM_DEPENDENCIES = Dir[
-  'walrus.gemspec',
-  'bin/walrus',
+  'walrat.gemspec',
   'lib/**/*.rb'
 ]
 
-BUILT_GEM = "walrus-#{Walrus::VERSION}.gem"
+BUILT_GEM = "walrat-#{Walrat::VERSION}.gem"
 file BUILT_GEM => BUILT_GEM_DEPENDENCIES do
-  sh 'gem build walrus.gemspec'
+  sh 'gem build walrat.gemspec'
 end
 
 desc 'Build gem ("gem build")'
