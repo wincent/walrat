@@ -24,20 +24,17 @@ require 'pathname'
 require 'rubygems'
 require 'spec'
 
-module Walrus
+module Walrat
   module SpecHelper
-    # will append the local "lib" and "ext" directories to search path if not
-    # already present
-    base    = File.expand_path '..', File.dirname(__FILE__)
-    LIBDIR  = Pathname.new(File.join base, 'lib').realpath
-    TOOL    = Pathname.new(File.join base, 'bin', 'walrus').realpath
+    # append local "lib" to LOAD_PATH if not already present
+    base    = File.expand_path '../lib', File.dirname(__FILE__)
+    LIBDIR  = Pathname.new(base).realpath
 
     # normalize all paths in the load path
-    normalized = $:.collect { |path| Pathname.new(path).realpath rescue path }
+    normalized = $:.map { |path| Pathname.new(path).realpath rescue path }
 
-    # only add the directory if it does not appear to be present already
-      $:.push(LIBDIR) unless normalized.include?(LIBDIR)
+    $:.unshift(LIBDIR) unless normalized.include?(LIBDIR)
   end # module SpecHelper
-end # module Walrus
+end # module Walrat
 
-require 'walrus'
+require 'walrat'
