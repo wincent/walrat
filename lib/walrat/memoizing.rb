@@ -1,0 +1,55 @@
+# Copyright 2007-2010 Wincent Colaiuta. All rights reserved.
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+require 'walrat'
+
+module Walrat
+  module Memoizing
+    # This method provides a clean, optional implementation of memoizing by
+    # serving as a wrapper for all parse invocations. Rather than calling the
+    # parse methods directly, this method should be called; if it is
+    # appropriate to use a memoizer then it will be invoked, otherwise control
+    # will fall through to the real parse method. Turning off memoizing is as
+    # simple as not passing a value with the :memoizer key in the options hash.
+    # This method defined is in a separate module so that it can easily be
+    # mixed in with all Parslets, ParsletCombinations and Predicates.
+    def memoizing_parse(string, options = {})
+      # will use memoizer if available and not instructed to ignore it
+      if options.has_key?(:memoizer) and not
+         (options.has_key?(:ignore_memoizer) and options[:ignore_memoizer])
+        options[:parseable] = self
+        options[:memoizer].parse string, options
+      else # otherwise will proceed as normal
+        options[:ignore_memoizer] = false
+        parse string, options
+      end
+    end
+
+    # Can only check for left recursion if memoizing is turned on (the help of
+    # the memoizer is needed).
+    def check_left_recursion parseable, options = {}
+      return unless options.has_key?(:memoizer)
+      options[:memoizer].check_left_recursion parseable, options
+    end
+  end # module Memoizing
+end # module Walrat
+
