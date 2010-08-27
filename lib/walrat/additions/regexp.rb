@@ -21,9 +21,9 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 require 'walrat'
+require 'walrat/parslet_combining'
 
 class Regexp
-  require 'walrat/parslet_combining'
   include Walrat::ParsletCombining
 
   # Returns a RegexpParslet based on the receiver

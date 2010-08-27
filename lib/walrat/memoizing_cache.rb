@@ -21,6 +21,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 require 'walrat'
+require 'singleton'
 
 module Walrat
   # The MemoizingCache class memoizes the outcomes of parse operations. The
@@ -38,7 +39,6 @@ module Walrat
   class MemoizingCache
     # Singleton class that serves as a default value for unset keys in a Hash.
     class NoValueForKey
-      require 'singleton'
       include Singleton
     end
 

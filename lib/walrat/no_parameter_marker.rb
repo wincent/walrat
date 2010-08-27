@@ -21,10 +21,10 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 require 'walrat'
+require 'singleton'
 
 module Walrat
   class NoParameterMarker
-    require 'singleton'
     include Singleton
   end # class NoParameterMarker
 end # module Walrat
