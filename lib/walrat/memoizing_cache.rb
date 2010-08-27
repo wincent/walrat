@@ -74,6 +74,9 @@ module Walrat
 
       # construct a unique identifier
       identifier = [options[:parseable], options[:line_start], options[:column_start]]
+
+      # BUG: the :origin key here is specific to Walrus (doesn't appear anywhere else
+      # in Walrat codebase)
       identifier << options[:origin] if options.has_key? :origin
       identifier << options[:skipping_override] if options.has_key? :skipping_override
 
