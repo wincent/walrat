@@ -131,16 +131,17 @@ module Walrat
 
       # Defines a rule and stores it
       #
-      # Expects an object that responds to the parse message, such as a Parslet
-      # or ParsletCombination. As this is intended to work with Parsing
-      # Expression Grammars, each rule may only be defined once. Defining a
-      # rule more than once will raise an ArgumentError.
+      # Expects an object that responds to the to_parseable message.
+      #
+      # As this is intended to work with Parsing Expression Grammars, each rule
+      # may only be defined once. Defining a rule more than once will raise an
+      # ArgumentError.
       def rule symbol, parseable
         raise ArgumentError, 'nil symbol' if symbol.nil?
         raise ArgumentError, 'nil parseable' if parseable.nil?
         raise ArgumentError,
           "rule '#{symbol}' already defined" if rules.has_key? symbol
-        rules[symbol] = parseable
+        rules[symbol] = parseable.to_parseable
       end
 
       # Dynamically creates a Node subclass inside the namespace of the current
