@@ -30,7 +30,7 @@ module Walrat
     # appropriate to use a memoizer then it will be invoked, otherwise control
     # will fall through to the real parse method. Turning off memoizing is as
     # simple as not passing a value with the :memoizer key in the options hash.
-    # This method defined is in a separate module so that it can easily be
+    # This method is defined in a separate module so that it can easily be
     # mixed in with all Parslets, ParsletCombinations and Predicates.
     def memoizing_parse(string, options = {})
       # will use memoizer if available and not instructed to ignore it
@@ -52,4 +52,3 @@ module Walrat
     end
   end # module Memoizing
 end # module Walrat
-
