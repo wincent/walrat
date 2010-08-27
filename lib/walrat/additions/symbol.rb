@@ -31,7 +31,7 @@ class Symbol
   # They can also be used to allow self-references within rules and productions
   # (recursion); for example:
   #
-  #   rule :thing & :thing.optional & :other_thing
+  #   rule :thing, :thing & :thing.optional & :other_thing
   #
   # Basically these SymbolParslets allow deferred evaluation of a rule or
   # production (deferred until parsing takes place) rather than being evaluated
