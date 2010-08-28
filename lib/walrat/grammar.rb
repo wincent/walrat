@@ -202,7 +202,7 @@ module Walrat
           productions.has_key?(rule_name)
         raise ArgumentError, "non-existent rule '#{rule_name}'" unless
           rules.has_key?(rule_name)
-        results = results.empty? ? [:lexeme] : results
+        results = [:lexeme] if results.empty?
         const_get(rule_name.to_s.to_class_name).production *results
         productions[rule_name] = results
       end
