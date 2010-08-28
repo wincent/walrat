@@ -23,7 +23,7 @@
 require 'walrat'
 
 module Walrat
-  # Make subclasses of this for us in Abstract Syntax Trees (ASTs).
+  # Make subclasses of this for use in Abstract Syntax Trees (ASTs).
   class Node
     include Walrat::LocationTracking
 
