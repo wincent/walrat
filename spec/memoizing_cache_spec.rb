@@ -1,4 +1,4 @@
-# Copyright 2007-2010 Wincent Colaiuta. All rights reserved.
+# Copyright 2007-2014 Greg Hurrell. All rights reserved.
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -43,9 +43,17 @@ describe Walrat::MemoizingCache::NoValueForKey do
 end
 
 describe Walrat::MemoizingCache do
-  it 'parses with memoizing turned on'
-  it 'parses with memoizing turned off'
-  specify 'parsing with memoization turned on is faster'
+  it 'parses with memoizing turned on' do
+    pending
+  end
+
+  it 'parses with memoizing turned off' do
+    pending
+  end
+
+  specify 'parsing with memoization turned on is faster' do
+    pending
+  end
 end
 
 # left-recursion is enabled by code in the memoizer and elsewhere; keep the

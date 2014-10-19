@@ -1,4 +1,4 @@
-# Copyright 2007-2010 Wincent Colaiuta. All rights reserved.
+# Copyright 2007-2014 Greg Hurrell. All rights reserved.
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -23,5 +23,7 @@
 require File.expand_path('spec_helper', File.dirname(__FILE__))
 
 describe Walrat::Node do
-  it 'has behavior'
+  it 'has behavior' do
+    pending
+  end
 end

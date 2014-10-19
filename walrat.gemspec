@@ -1,4 +1,4 @@
-# Copyright 2007-2010 Wincent Colaiuta. All rights reserved.
+# Copyright 2007-2014 Greg Hurrell. All rights reserved.
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -23,21 +23,22 @@
 require File.expand_path('lib/walrat/version.rb', File.dirname(__FILE__))
 
 Gem::Specification.new do |s|
-  s.name              = 'walrat'
-  s.version           = Walrat::VERSION
-  s.author            = 'Wincent Colaiuta'
-  s.email             = 'win@wincent.com'
-  s.homepage          = 'https://wincent.com/products/walrat'
-  s.rubyforge_project = 'walrus'
-  s.platform          = Gem::Platform::RUBY
-  s.summary           = 'Object-oriented templating system'
-  s.description       = <<-DESC
+  s.author                = 'Greg Hurrell'
+  s.email                 = 'greg@hurrell.net'
+  s.has_rdoc              = true
+  s.homepage              = 'https://wincent.com/products/walrat'
+  s.name                  = 'walrat'
+  s.platform              = Gem::Platform::RUBY
+  s.require_paths         = ['lib']
+  s.required_ruby_version = '~> 2.1'
+  s.rubyforge_project     = 'walrus'
+  s.summary               = 'Object-oriented templating system'
+  s.version               = Walrat::VERSION
+  s.description           = <<-DESC
     Walrat is a Parsing Expression Grammar (PEG) parser generator that
     creates integrated lexers, "packrat" parsers, and Abstract Syntax Tree
     (AST) builders.
   DESC
-  s.require_paths     = ['lib']
-  s.has_rdoc          = true
 
   # TODO: add 'docs' subdirectory, 'README.txt' when they're done
   s.files             = Dir['lib/**/*.rb']
