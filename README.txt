@@ -97,15 +97,6 @@ The repository is mirrored hourly to GitHub and Gitorious:
 Walrat is written and maintained by Greg Hurrell <greg@hurrell.net>.
 
 
-== Donations ==
-
-Walrat is free software released under the terms of the BSD license.
-If you would like to support further development you can make a donation via
-PayPal to win@wincent.com:
-
-  https://wincent.com/products/walrat/donations
-
-
 == License ==
 
 Copyright 2007-2014 Greg Hurrell. All rights reserved.
