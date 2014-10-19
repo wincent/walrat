@@ -58,9 +58,13 @@ Running this file produces the following output:
 
 == System requirements ==
 
-Walrat currently only supports Ruby 1.8, although Ruby 1.9 compatibility work
-is underway. JRuby is not yet officially supported, although many complex
-grammars (such as the Walrus grammar) have already been successfully tested.
+The original release of Walrat (0.1) only supported Ruby 1.8, although it could
+work to some degree on other versions.
+
+From the 0.2 release on, Ruby 2.1 is required.
+
+JRuby is not yet officially supported, although many complex grammars (such as
+the Walrus grammar) have already been successfully tested.
 
 
 == Installation ==
