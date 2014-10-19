@@ -94,7 +94,7 @@ The repository is mirrored hourly to GitHub and Gitorious:
 
 == Author ==
 
-Walrat is written and maintained by Wincent Colaiuta <win@wincent.com>.
+Walrat is written and maintained by Greg Hurrell <greg@hurrell.net>.
 
 
 == Donations ==
@@ -108,7 +108,7 @@ PayPal to win@wincent.com:
 
 == License ==
 
-Copyright 2007-2010 Wincent Colaiuta. All rights reserved.
+Copyright 2007-2014 Greg Hurrell. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
