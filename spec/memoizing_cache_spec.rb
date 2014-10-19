@@ -1,7 +1,7 @@
 # Copyright 2007-2014 Greg Hurrell. All rights reserved.
 # Licensed under the terms of the BSD 2-clause license.
 
-require File.expand_path('spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 describe Walrat::MemoizingCache::NoValueForKey do
   it 'is a singleton' do
@@ -24,17 +24,9 @@ describe Walrat::MemoizingCache::NoValueForKey do
 end
 
 describe Walrat::MemoizingCache do
-  it 'parses with memoizing turned on' do
-    pending
-  end
-
-  it 'parses with memoizing turned off' do
-    pending
-  end
-
-  specify 'parsing with memoization turned on is faster' do
-    pending
-  end
+  it 'parses with memoizing turned on'
+  it 'parses with memoizing turned off'
+  it 'parses faster with memoization turned on'
 end
 
 # left-recursion is enabled by code in the memoizer and elsewhere; keep the

@@ -2,7 +2,7 @@
 # Copyright 2007-2014 Greg Hurrell. All rights reserved.
 # Licensed under the terms of the BSD 2-clause license.
 
-require File.expand_path('spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 describe Walrat::ParserState do
   before do
@@ -76,26 +76,26 @@ describe Walrat::ParserState do
 
   it '"parsed" should complain if passed something that doesn\'t respond to the "line_end" and "column_end" messages' do
     # line_end
-    my_mock = mock('mock_which_does_not_implement_line_end', :null_object => true)
-    my_mock.should_receive(:line_end).and_raise(NoMethodError)
-    lambda { @state.parsed(my_mock) }.should raise_error(NoMethodError)
+    my_mock = double('Mock which does not implement #line_end').as_null_object
+    expect(my_mock).to receive(:line_end).and_raise(NoMethodError)
+    expect { @state.parsed(my_mock) }.to raise_error(NoMethodError)
 
     # column_end
-    my_mock = mock('mock_which_does_not_implement_column_end', :null_object => true)
-    my_mock.should_receive(:column_end).and_raise(NoMethodError)
-    lambda { @state.parsed(my_mock) }.should raise_error(NoMethodError)
+    my_mock = double('Mock which does not implement #column_end').as_null_object
+    expect(my_mock).to receive(:column_end).and_raise(NoMethodError)
+    expect { @state.parsed(my_mock) }.to raise_error(NoMethodError)
   end
 
   it '"skipped" should complain if passed something that doesn\'t respond to the "line_end" and "column_end" messages' do
     # line_end
-    my_mock = mock('mock_which_does_not_implement_line_end', :null_object => true)
-    my_mock.should_receive(:line_end).and_raise(NoMethodError)
-    lambda { @state.skipped(my_mock) }.should raise_error(NoMethodError)
+    my_mock = double('Mock which does not implement #line_end').as_null_object
+    expect(my_mock).to receive(:line_end).and_raise(NoMethodError)
+    expect { @state.skipped(my_mock) }.to raise_error(NoMethodError)
 
     # column_end
-    my_mock = mock('mock_which_does_not_implement_column_end', :null_object => true)
-    my_mock.should_receive(:column_end).and_raise(NoMethodError)
-    lambda { @state.skipped(my_mock) }.should raise_error(NoMethodError)
+    my_mock = double('Mock which does not implement #column_end').as_null_object
+    expect(my_mock).to receive(:column_end).and_raise(NoMethodError)
+    expect { @state.skipped(my_mock) }.to raise_error(NoMethodError)
   end
 
   it 'should be able to mix use of "parsed" and "skipped" methods' do

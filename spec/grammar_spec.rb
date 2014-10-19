@@ -1,7 +1,7 @@
 # Copyright 2007-2014 Greg Hurrell. All rights reserved.
 # Licensed under the terms of the BSD 2-clause license.
 
-require File.expand_path('spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 describe Walrat::Grammar do
   describe '::rules' do
@@ -106,9 +106,7 @@ describe Walrat::Grammar do
         starting_symbol :expr # :expr is not defined
       end
 
-      expect do
-        RoyGrammar.new.parse('foo')
-      end.should raise_error(/no rule for key/)
+      expect { RoyGrammar.new.parse('foo') }.to raise_error(/no rule for key/)
     end
 
     it 'should be able to parse using a simple grammar (one rule)' do
@@ -404,20 +402,20 @@ describe Walrat::Grammar do
     end
 
     it 'should complain if trying to set default skipping parslet more than once' do
-      expect do
+      expect {
         class SetSkipperTwice < Walrat::Grammar
           skipping :first   # fine
           skipping :again   # should raise here
         end
-      end.should raise_error(/default skipping parslet already set/)
+      }.to raise_error(/default skipping parslet already set/)
     end
 
     it 'should complain if passed nil' do
-      expect do
+      expect {
         class PassNilToSkipping < Walrat::Grammar
           skipping nil
         end
-      end.should raise_error(ArgumentError, /nil rule_or_parslet/)
+      }.to raise_error(ArgumentError, /nil rule_or_parslet/)
     end
 
     it 'should be able to override default skipping parslet on a per-rule basis' do

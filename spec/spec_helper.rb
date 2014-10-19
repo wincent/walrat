@@ -2,8 +2,7 @@
 # Licensed under the terms of the BSD 2-clause license.
 
 require 'pathname'
-require 'rubygems'
-require 'spec'
+require 'rspec'
 
 module Walrat
   module SpecHelper

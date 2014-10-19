@@ -23,6 +23,6 @@ Gem::Specification.new do |s|
 
   # TODO: add 'docs' subdirectory, 'README.txt' when they're done
   s.files             = Dir['lib/**/*.rb']
-  s.add_development_dependency 'rspec', '1.3.0'
+  s.add_development_dependency 'rspec', '~> 3.1'
   s.add_development_dependency 'yard'
 end
