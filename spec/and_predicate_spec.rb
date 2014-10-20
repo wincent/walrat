@@ -13,8 +13,8 @@ describe Walrat::AndPredicate do
   end
 
   it 'is able to compare for equality' do
-    should eql(Walrat::AndPredicate.new('foo'))     # same
-    should_not eql(Walrat::AndPredicate.new('bar')) # different
-    should_not eql(Walrat::Predicate.new('foo'))    # same but different class
+    is_expected.to eql(Walrat::AndPredicate.new('foo'))     # same
+    is_expected.not_to eql(Walrat::AndPredicate.new('bar')) # different
+    is_expected.not_to eql(Walrat::Predicate.new('foo'))    # same but different class
   end
 end

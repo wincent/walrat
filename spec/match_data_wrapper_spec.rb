@@ -18,13 +18,13 @@ describe Walrat::MatchDataWrapper do
   specify 'stored match data persists after multiple matches are executed' do
     original      = @match.match_data     # store original value
     'foo'         =~ /foo/                # clobber $~
-    @match.match_data.should == original  # confirm stored value still intact
+    expect(@match.match_data).to eq(original)  # confirm stored value still intact
   end
 
   specify 'comparisons with Strings work without having to call "to_s"' do
-    @match.should         == 'hello agent'  # normal order
-    'hello agent'.should  == @match         # reverse order
-    @match.should_not     == 'foobar'       # inverse test sense (not equal)
-    'foobar'.should_not   == @match         # reverse order
+    expect(@match).to         eq('hello agent')  # normal order
+    expect('hello agent').to  eq(@match)         # reverse order
+    expect(@match).not_to     eq('foobar')       # inverse test sense (not equal)
+    expect('foobar').not_to   eq(@match)         # reverse order
   end
 end

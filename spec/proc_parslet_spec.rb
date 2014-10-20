@@ -33,14 +33,14 @@ describe Walrat::ProcParslet do
   end
 
   it 'returns a parsed value if able to parse' do
-    @parslet.parse('foobar').should == 'foobar'
+    expect(@parslet.parse('foobar')).to eq('foobar')
   end
 
   it 'can be compared for equality' do
     # in practice only parslets created with the exact same Proc instance will
     # be eql because Proc returns different hashes for each
-    @parslet.should eql(@parslet.clone)
-    @parslet.should eql(@parslet.dup)
-    @parslet.should_not eql(lambda { nil }.to_parseable)
+    expect(@parslet).to eql(@parslet.clone)
+    expect(@parslet).to eql(@parslet.dup)
+    expect(@parslet).not_to eql(lambda { nil }.to_parseable)
   end
 end

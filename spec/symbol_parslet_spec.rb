@@ -11,9 +11,9 @@ describe Walrat::SymbolParslet do
   end
 
   it 'should be able to compare symbol parslets for equality' do
-    :foo.to_parseable.should eql(:foo.to_parseable)           # equal
-    :foo.to_parseable.should_not eql(:bar.to_parseable)       # different
-    :foo.to_parseable.should_not eql(:Foo.to_parseable)       # differing only in case
-    :foo.to_parseable.should_not eql(/foo/)                   # totally different classes
+    expect(:foo.to_parseable).to eql(:foo.to_parseable)           # equal
+    expect(:foo.to_parseable).not_to eql(:bar.to_parseable)       # different
+    expect(:foo.to_parseable).not_to eql(:Foo.to_parseable)       # differing only in case
+    expect(:foo.to_parseable).not_to eql(/foo/)                   # totally different classes
   end
 end

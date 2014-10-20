@@ -9,17 +9,17 @@ describe Walrat::MemoizingCache::NoValueForKey do
       Walrat::MemoizingCache::NoValueForKey.new
     end.to raise_error(NoMethodError, /private method/)
 
-    Walrat::MemoizingCache::NoValueForKey.instance.object_id.
-      should == Walrat::MemoizingCache::NoValueForKey.instance.object_id
+    expect(Walrat::MemoizingCache::NoValueForKey.instance.object_id).
+      to eq(Walrat::MemoizingCache::NoValueForKey.instance.object_id)
   end
 
   it 'should be able to use NoValueForKey as the default value for a hash' do
     hash = Hash.new Walrat::MemoizingCache::NoValueForKey.instance
-    hash.default.should == Walrat::MemoizingCache::NoValueForKey.instance
-    hash[:foo].should == Walrat::MemoizingCache::NoValueForKey.instance
+    expect(hash.default).to eq(Walrat::MemoizingCache::NoValueForKey.instance)
+    expect(hash[:foo]).to eq(Walrat::MemoizingCache::NoValueForKey.instance)
     hash[:foo] = 'bar'
-    hash[:foo].should == 'bar'
-    hash[:bar].should == Walrat::MemoizingCache::NoValueForKey.instance
+    expect(hash[:foo]).to eq('bar')
+    expect(hash[:bar]).to eq(Walrat::MemoizingCache::NoValueForKey.instance)
   end
 end
 
@@ -52,7 +52,7 @@ describe 'working with left-recursive rules' do
     end
 
     grammar = AlmostInfinite.new
-    grammar.parse('foo').should == 'foo'
+    expect(grammar.parse('foo')).to eq('foo')
   end
 
   it 'retries after short-circuiting if valid continuation point' do
@@ -64,11 +64,11 @@ describe 'working with left-recursive rules' do
 
     # note the right associativity
     grammar = MuchMoreRealisticExample.new
-    grammar.parse('foo').should == 'foo'
-    grammar.parse('foofoo').should == ['foo', 'foo']
-    grammar.parse('foofoofoo').should == [['foo', 'foo'], 'foo']
-    grammar.parse('foofoofoofoo').should == [[['foo', 'foo'], 'foo'], 'foo']
-    grammar.parse('foofoofoofoofoo').should == [[[['foo', 'foo'], 'foo'], 'foo'], 'foo']
+    expect(grammar.parse('foo')).to eq('foo')
+    expect(grammar.parse('foofoo')).to eq(['foo', 'foo'])
+    expect(grammar.parse('foofoofoo')).to eq([['foo', 'foo'], 'foo'])
+    expect(grammar.parse('foofoofoofoo')).to eq([[['foo', 'foo'], 'foo'], 'foo'])
+    expect(grammar.parse('foofoofoofoofoo')).to eq([[[['foo', 'foo'], 'foo'], 'foo'], 'foo'])
   end
 
   specify 'right associativity should work when building AST nodes' do

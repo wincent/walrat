@@ -9,22 +9,22 @@ describe 'using shorthand to get RegexpParslets from Regexp instances' do
   context 'chaining two Regexps with the "&" operator' do
     it 'yields a two-element sequence' do
       sequence = /foo/ & /bar/
-      sequence.parse('foobar').map { |each| each.to_s }.should == ['foo', 'bar']
+      expect(sequence.parse('foobar').map { |each| each.to_s }).to eq(['foo', 'bar'])
     end
   end
 
   context 'chaining three Regexps with the "&" operator' do
     it 'yields a three-element sequence' do
       sequence = /foo/ & /bar/ & /\.\.\./
-      sequence.parse('foobar...').map { |each| each.to_s }.should == ['foo', 'bar', '...']
+      expect(sequence.parse('foobar...').map { |each| each.to_s }).to eq(['foo', 'bar', '...'])
     end
   end
 
   context 'alternating two Regexps with the "|" operator' do
     it 'yields a MatchDataWrapper' do
       sequence = /foo/ | /bar/
-      sequence.parse('foobar').to_s.should == 'foo'
-      sequence.parse('bar...').to_s.should == 'bar'
+      expect(sequence.parse('foobar').to_s).to eq('foo')
+      expect(sequence.parse('bar...').to_s).to eq('bar')
       expect do
         sequence.parse('no match')
       end.to raise_error(Walrat::ParseError)

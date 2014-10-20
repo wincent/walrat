@@ -13,57 +13,57 @@ describe Walrat::StringEnumerator do
 
   it 'returns characters one by one until end of string, then return nil' do
     enumerator = Walrat::StringEnumerator.new('hello')
-    enumerator.next.should == 'h'
-    enumerator.next.should == 'e'
-    enumerator.next.should == 'l'
-    enumerator.next.should == 'l'
-    enumerator.next.should == 'o'
-    enumerator.next.should be_nil
+    expect(enumerator.next).to eq('h')
+    expect(enumerator.next).to eq('e')
+    expect(enumerator.next).to eq('l')
+    expect(enumerator.next).to eq('l')
+    expect(enumerator.next).to eq('o')
+    expect(enumerator.next).to be_nil
   end
 
   it 'is Unicode-aware (UTF-8)' do
     enumerator = Walrat::StringEnumerator.new('€ cañon')
-    enumerator.next.should == '€'
-    enumerator.next.should == ' '
-    enumerator.next.should == 'c'
-    enumerator.next.should == 'a'
-    enumerator.next.should == 'ñ'
-    enumerator.next.should == 'o'
-    enumerator.next.should == 'n'
-    enumerator.next.should be_nil
+    expect(enumerator.next).to eq('€')
+    expect(enumerator.next).to eq(' ')
+    expect(enumerator.next).to eq('c')
+    expect(enumerator.next).to eq('a')
+    expect(enumerator.next).to eq('ñ')
+    expect(enumerator.next).to eq('o')
+    expect(enumerator.next).to eq('n')
+    expect(enumerator.next).to be_nil
   end
 
   # this was a bug
   it 'continues past newlines' do
     enumerator = Walrat::StringEnumerator.new("hello\nworld")
-    enumerator.next.should == 'h'
-    enumerator.next.should == 'e'
-    enumerator.next.should == 'l'
-    enumerator.next.should == 'l'
-    enumerator.next.should == 'o'
-    enumerator.next.should == "\n" # was returning nil here
-    enumerator.next.should == 'w'
-    enumerator.next.should == 'o'
-    enumerator.next.should == 'r'
-    enumerator.next.should == 'l'
-    enumerator.next.should == 'd'
+    expect(enumerator.next).to eq('h')
+    expect(enumerator.next).to eq('e')
+    expect(enumerator.next).to eq('l')
+    expect(enumerator.next).to eq('l')
+    expect(enumerator.next).to eq('o')
+    expect(enumerator.next).to eq("\n") # was returning nil here
+    expect(enumerator.next).to eq('w')
+    expect(enumerator.next).to eq('o')
+    expect(enumerator.next).to eq('r')
+    expect(enumerator.next).to eq('l')
+    expect(enumerator.next).to eq('d')
   end
 
   it 'can recall the last character using the "last" method' do
     enumerator = Walrat::StringEnumerator.new('h€llo')
-    enumerator.last.should == nil # nothing scanned yet
-    enumerator.next.should == 'h' # advance
-    enumerator.last.should == nil # still no previous character
-    enumerator.next.should == '€' # advance
-    enumerator.last.should == 'h'
-    enumerator.next.should == 'l' # advance
-    enumerator.last.should == '€'
-    enumerator.next.should == 'l' # advance
-    enumerator.last.should == 'l'
-    enumerator.next.should == 'o' # advance
-    enumerator.last.should == 'l'
-    enumerator.next.should == nil # nothing left to scan
-    enumerator.last.should == 'o'
-    enumerator.last.should == 'o' # didn't advance, so should return the same
+    expect(enumerator.last).to eq(nil) # nothing scanned yet
+    expect(enumerator.next).to eq('h') # advance
+    expect(enumerator.last).to eq(nil) # still no previous character
+    expect(enumerator.next).to eq('€') # advance
+    expect(enumerator.last).to eq('h')
+    expect(enumerator.next).to eq('l') # advance
+    expect(enumerator.last).to eq('€')
+    expect(enumerator.next).to eq('l') # advance
+    expect(enumerator.last).to eq('l')
+    expect(enumerator.next).to eq('o') # advance
+    expect(enumerator.last).to eq('l')
+    expect(enumerator.next).to eq(nil) # nothing left to scan
+    expect(enumerator.last).to eq('o')
+    expect(enumerator.last).to eq('o') # didn't advance, so should return the same
   end
 end

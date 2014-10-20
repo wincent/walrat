@@ -11,11 +11,11 @@ describe Walrat::NotPredicate do
   end
 
   it 'can be compared for equality' do
-    Walrat::NotPredicate.new('foo').
-      should eql(Walrat::NotPredicate.new('foo'))      # same
-    Walrat::NotPredicate.new('foo').
-      should_not eql(Walrat::NotPredicate.new('bar'))  # different
-    Walrat::NotPredicate.new('foo').
-      should_not eql(Walrat::Predicate.new('foo'))     # different class
+    expect(Walrat::NotPredicate.new('foo')).
+      to eql(Walrat::NotPredicate.new('foo'))      # same
+    expect(Walrat::NotPredicate.new('foo')).
+      not_to eql(Walrat::NotPredicate.new('bar'))  # different
+    expect(Walrat::NotPredicate.new('foo')).
+      not_to eql(Walrat::Predicate.new('foo'))     # different class
   end
 end

@@ -50,8 +50,8 @@ describe Walrat::Grammar do
         node      :my_subclass_of_a_subclass, :my_node_subclass
       end
 
-      NodeGrammar1::MyNodeSubclass.superclass.should == Walrat::Node
-      NodeGrammar1::MySubclassOfASubclass.superclass.should == NodeGrammar1::MyNodeSubclass
+      expect(NodeGrammar1::MyNodeSubclass.superclass).to eq(Walrat::Node)
+      expect(NodeGrammar1::MySubclassOfASubclass.superclass).to eq(NodeGrammar1::MyNodeSubclass)
     end
 
     it 'should complain if an attempt is made to create the same production class twice' do
@@ -97,8 +97,8 @@ describe Walrat::Grammar do
       end
 
       grammar = AliceGrammar.new
-      grammar.parse('foo').should == 'foo'
-      lambda { grammar.parse('') }.should raise_error(Walrat::ParseError)
+      expect(grammar.parse('foo')).to eq('foo')
+      expect { grammar.parse('') }.to raise_error(Walrat::ParseError)
     end
 
     it 'should complain if reference is made to an undefined symbol' do
@@ -116,8 +116,8 @@ describe Walrat::Grammar do
       end
 
       grammar = SimpleGrammar.new
-      grammar.parse('foo!').should == 'foo!'
-      lambda { grammar.parse('---') }.should raise_error(Walrat::ParseError)
+      expect(grammar.parse('foo!')).to eq('foo!')
+      expect { grammar.parse('---') }.to raise_error(Walrat::ParseError)
     end
 
     it 'should be able to parse using a simple grammar (two rules)' do
@@ -128,9 +128,9 @@ describe Walrat::Grammar do
       end
 
       grammar = AlmostAsSimpleGrammar.new
-      grammar.parse('foo!').should == 'foo!'
-      grammar.parse('bar').should == 'bar'
-      lambda { grammar.parse('---') }.should raise_error(Walrat::ParseError)
+      expect(grammar.parse('foo!')).to eq('foo!')
+      expect(grammar.parse('bar')).to eq('bar')
+      expect { grammar.parse('---') }.to raise_error(Walrat::ParseError)
     end
 
     it 'should be able to parse using a simple grammar (three rules)' do
@@ -148,9 +148,9 @@ describe Walrat::Grammar do
       end
 
       grammar = MacGrammar.new
-      grammar.parse('## hello!').should == ['##', ' hello!']
-      grammar.parse('##').should == '##'
-      lambda { grammar.parse('foobar') }.should raise_error(Walrat::ParseError)
+      expect(grammar.parse('## hello!')).to eq(['##', ' hello!'])
+      expect(grammar.parse('##')).to eq('##')
+      expect { grammar.parse('foobar') }.to raise_error(Walrat::ParseError)
 
       # the same grammar rewritten without intermediary parslets
       # (three rules, no standalone parslets)
@@ -162,9 +162,9 @@ describe Walrat::Grammar do
       end
 
       grammar = MacAltGrammar.new
-      grammar.parse('## hello!').should == ['##', ' hello!']
-      grammar.parse('##').should == '##'
-      lambda { grammar.parse('foobar') }.should raise_error(Walrat::ParseError)
+      expect(grammar.parse('## hello!')).to eq(['##', ' hello!'])
+      expect(grammar.parse('##')).to eq('##')
+      expect { grammar.parse('foobar') }.to raise_error(Walrat::ParseError)
     end
 
     it 'should be able to parse using recursive rules (nested parentheses)' do
@@ -178,10 +178,10 @@ describe Walrat::Grammar do
       end
 
       grammar = NestedGrammar.new
-      grammar.parse('()').should == ['(', ')']
-      grammar.parse('(content)').should == ['(', 'content', ')']
-      grammar.parse('(content (and more content))').should == ['(', ['content ', ['(', 'and more content', ')']], ')']
-      lambda { grammar.parse('(') }.should raise_error(Walrat::ParseError)
+      expect(grammar.parse('()')).to eq(['(', ')'])
+      expect(grammar.parse('(content)')).to eq(['(', 'content', ')'])
+      expect(grammar.parse('(content (and more content))')).to eq(['(', ['content ', ['(', 'and more content', ')']], ')'])
+      expect { grammar.parse('(') }.to raise_error(Walrat::ParseError)
 
       # same example but automatically skipping the delimiting braces for clearer output
       class NestedSkippingGrammar < Walrat::Grammar
@@ -190,13 +190,13 @@ describe Walrat::Grammar do
       end
 
       grammar = NestedSkippingGrammar.new
-      grammar.parse('()').should == []
-      grammar.parse('(content)').should == 'content'
-      grammar.parse('(content (and more content))').should == ['content ', 'and more content']
-      grammar.parse('(content (and more content)(and more))').should == ['content ', 'and more content', 'and more']
-      grammar.parse('(content (and more content)(and more)(more still))').should == ['content ', 'and more content', 'and more', 'more still']
-      grammar.parse('(content (and more content)(and more(more still)))').should == ['content ', 'and more content', ['and more', 'more still']]
-      lambda { grammar.parse('(') }.should raise_error(Walrat::ParseError)
+      expect(grammar.parse('()')).to eq([])
+      expect(grammar.parse('(content)')).to eq('content')
+      expect(grammar.parse('(content (and more content))')).to eq(['content ', 'and more content'])
+      expect(grammar.parse('(content (and more content)(and more))')).to eq(['content ', 'and more content', 'and more'])
+      expect(grammar.parse('(content (and more content)(and more)(more still))')).to eq(['content ', 'and more content', 'and more', 'more still'])
+      expect(grammar.parse('(content (and more content)(and more(more still)))')).to eq(['content ', 'and more content', ['and more', 'more still']])
+      expect { grammar.parse('(') }.to raise_error(Walrat::ParseError)
 
       # note that this confusing (possible even misleading) nesting goes away if you use a proper AST
       class NestedBracketsWithAST < Walrat::Grammar
@@ -212,36 +212,36 @@ describe Walrat::Grammar do
 
       # simple tests
       grammar = NestedBracketsWithAST.new
-      grammar.parse('()').children.should == []
-      grammar.parse('(content)').children.to_s.should == 'content'
+      expect(grammar.parse('()').children).to eq([])
+      expect(grammar.parse('(content)').children.to_s).to eq('content')
 
       # nested test: two expressions at the first level, one of them nested
       results = grammar.parse('(content (and more content))')
-      results.children[0].should == 'content '
-      results.children[1].children.to_s.should == 'and more content'
+      expect(results.children[0]).to eq('content ')
+      expect(results.children[1].children.to_s).to eq('and more content')
 
       # nested test: three expressions at first level, two of them nested
       results = grammar.parse('(content (and more content)(and more))')#.should == ['content ', 'and more content', 'and more']
-      results.children[0].should == 'content '
-      results.children[1].children.should == 'and more content'
-      results.children[2].children.should == 'and more'
+      expect(results.children[0]).to eq('content ')
+      expect(results.children[1].children).to eq('and more content')
+      expect(results.children[2].children).to eq('and more')
 
       # nested test: four expressions at the first level, three of them nested
       results = grammar.parse('(content (and more content)(and more)(more still))')
-      results.children[0].should == 'content '
-      results.children[1].children.should == 'and more content'
-      results.children[2].children.should == 'and more'
-      results.children[3].children.should == 'more still'
+      expect(results.children[0]).to eq('content ')
+      expect(results.children[1].children).to eq('and more content')
+      expect(results.children[2].children).to eq('and more')
+      expect(results.children[3].children).to eq('more still')
 
       # nested test: three expressions at the first level, one nested and another not only nested but containing another level of nesting
       results = grammar.parse('(content (and more content)(and more(more still)))')
-      results.children[0].should == 'content '
-      results.children[1].children.should == 'and more content'
-      results.children[2].children[0].should == 'and more'
-      results.children[2].children[1].children.should == 'more still'
+      expect(results.children[0]).to eq('content ')
+      expect(results.children[1].children).to eq('and more content')
+      expect(results.children[2].children[0]).to eq('and more')
+      expect(results.children[2].children[1].children).to eq('more still')
 
       # bad input case
-      lambda { grammar.parse('(') }.should raise_error(Walrat::ParseError)
+      expect { grammar.parse('(') }.to raise_error(Walrat::ParseError)
     end
 
     it 'should be able to parse using recursive rules (nested comments)' do
@@ -254,10 +254,10 @@ describe Walrat::Grammar do
       end
 
       grammar = NestedCommentsGrammar.new
-      grammar.parse('/**/').should == ['/*', '*/']
-      grammar.parse('/*comment*/').should == ['/*', 'comment', '*/']
-      grammar.parse('/* comment /* nested */*/').should == ['/*', [' comment ', ['/*', ' nested ', '*/']], '*/']
-      lambda { grammar.parse('/*') }.should raise_error(Walrat::ParseError)
+      expect(grammar.parse('/**/')).to eq(['/*', '*/'])
+      expect(grammar.parse('/*comment*/')).to eq(['/*', 'comment', '*/'])
+      expect(grammar.parse('/* comment /* nested */*/')).to eq(['/*', [' comment ', ['/*', ' nested ', '*/']], '*/'])
+      expect { grammar.parse('/*') }.to raise_error(Walrat::ParseError)
     end
 
     it 'should be able to write a grammar that produces an AST for a simple language that supports addition and assignment' do
@@ -285,50 +285,50 @@ describe Walrat::Grammar do
 
       grammar = SimpleASTLanguage.new
       results = grammar.parse('hello')
-      results.should be_kind_of(SimpleASTLanguage::Identifier)
-      results.lexeme.should == 'hello'
+      expect(results).to be_kind_of(SimpleASTLanguage::Identifier)
+      expect(results.lexeme).to eq('hello')
 
       results = grammar.parse('1234')
-      results.should be_kind_of(SimpleASTLanguage::IntegerLiteral)
-      results.lexeme.should == '1234'
+      expect(results).to be_kind_of(SimpleASTLanguage::IntegerLiteral)
+      expect(results.lexeme).to eq('1234')
 
       results = grammar.parse('foo=bar')
-      results.should be_kind_of(SimpleASTLanguage::Expression)
-      results.should be_kind_of(SimpleASTLanguage::AssignmentExpression)
-      results.target.should be_kind_of(SimpleASTLanguage::Identifier)
-      results.target.lexeme.should == 'foo'
-      results.value.should be_kind_of(SimpleASTLanguage::Identifier)
-      results.value.lexeme.should == 'bar'
+      expect(results).to be_kind_of(SimpleASTLanguage::Expression)
+      expect(results).to be_kind_of(SimpleASTLanguage::AssignmentExpression)
+      expect(results.target).to be_kind_of(SimpleASTLanguage::Identifier)
+      expect(results.target.lexeme).to eq('foo')
+      expect(results.value).to be_kind_of(SimpleASTLanguage::Identifier)
+      expect(results.value.lexeme).to eq('bar')
 
       results = grammar.parse('baz+123')
-      results.should be_kind_of(SimpleASTLanguage::Expression)
-      results.should be_kind_of(SimpleASTLanguage::AdditionExpression)
-      results.summee.should be_kind_of(SimpleASTLanguage::Identifier)
-      results.summee.lexeme.should == 'baz'
-      results.summor.should be_kind_of(SimpleASTLanguage::IntegerLiteral)
-      results.summor.lexeme.should == '123'
+      expect(results).to be_kind_of(SimpleASTLanguage::Expression)
+      expect(results).to be_kind_of(SimpleASTLanguage::AdditionExpression)
+      expect(results.summee).to be_kind_of(SimpleASTLanguage::Identifier)
+      expect(results.summee.lexeme).to eq('baz')
+      expect(results.summor).to be_kind_of(SimpleASTLanguage::IntegerLiteral)
+      expect(results.summor.lexeme).to eq('123')
 
       results = grammar.parse('foo=abc+123')
-      results.should be_kind_of(SimpleASTLanguage::Expression)
-      results.should be_kind_of(SimpleASTLanguage::AssignmentExpression)
-      results.target.should be_kind_of(SimpleASTLanguage::Identifier)
-      results.target.lexeme.should == 'foo'
-      results.value.should be_kind_of(SimpleASTLanguage::AdditionExpression)
-      results.value.summee.should be_kind_of(SimpleASTLanguage::Identifier)
-      results.value.summee.lexeme.should == 'abc'
-      results.value.summor.should be_kind_of(SimpleASTLanguage::IntegerLiteral)
-      results.value.summor.lexeme.should == '123'
+      expect(results).to be_kind_of(SimpleASTLanguage::Expression)
+      expect(results).to be_kind_of(SimpleASTLanguage::AssignmentExpression)
+      expect(results.target).to be_kind_of(SimpleASTLanguage::Identifier)
+      expect(results.target.lexeme).to eq('foo')
+      expect(results.value).to be_kind_of(SimpleASTLanguage::AdditionExpression)
+      expect(results.value.summee).to be_kind_of(SimpleASTLanguage::Identifier)
+      expect(results.value.summee.lexeme).to eq('abc')
+      expect(results.value.summor).to be_kind_of(SimpleASTLanguage::IntegerLiteral)
+      expect(results.value.summor.lexeme).to eq('123')
 
       results = grammar.parse('a+b+2')
-      results.should be_kind_of(SimpleASTLanguage::Expression)
-      results.should be_kind_of(SimpleASTLanguage::AdditionExpression)
-      results.summee.should be_kind_of(SimpleASTLanguage::Identifier)
-      results.summee.lexeme.should == 'a'
-      results.summor.should be_kind_of(SimpleASTLanguage::AdditionExpression)
-      results.summor.summee.should be_kind_of(SimpleASTLanguage::Identifier)
-      results.summor.summee.lexeme.should == 'b'
-      results.summor.summor.should be_kind_of(SimpleASTLanguage::IntegerLiteral)
-      results.summor.summor.lexeme.should == '2'
+      expect(results).to be_kind_of(SimpleASTLanguage::Expression)
+      expect(results).to be_kind_of(SimpleASTLanguage::AdditionExpression)
+      expect(results.summee).to be_kind_of(SimpleASTLanguage::Identifier)
+      expect(results.summee.lexeme).to eq('a')
+      expect(results.summor).to be_kind_of(SimpleASTLanguage::AdditionExpression)
+      expect(results.summor.summee).to be_kind_of(SimpleASTLanguage::Identifier)
+      expect(results.summor.summee.lexeme).to eq('b')
+      expect(results.summor.summor).to be_kind_of(SimpleASTLanguage::IntegerLiteral)
+      expect(results.summor.summor.lexeme).to eq('2')
     end
 
     it 'should be able to write a grammar that complains if all the input is not consumed' do
@@ -342,12 +342,12 @@ describe Walrat::Grammar do
       end
 
       grammar = ComplainingGrammar.new
-      grammar.parse('').should == ''
-      grammar.parse('foo').should == 'foo'
-      grammar.parse('foo bar').should == ['foo', 'bar']
-      lambda { grammar.parse('...') }.should raise_error(Walrat::ParseError)
-      lambda { grammar.parse('foo...') }.should raise_error(Walrat::ParseError)
-      lambda { grammar.parse('foo bar...') }.should raise_error(Walrat::ParseError)
+      expect(grammar.parse('')).to eq('')
+      expect(grammar.parse('foo')).to eq('foo')
+      expect(grammar.parse('foo bar')).to eq(['foo', 'bar'])
+      expect { grammar.parse('...') }.to raise_error(Walrat::ParseError)
+      expect { grammar.parse('foo...') }.to raise_error(Walrat::ParseError)
+      expect { grammar.parse('foo bar...') }.to raise_error(Walrat::ParseError)
     end
 
     it 'should be able to define a default parslet for intertoken skipping' do
@@ -366,12 +366,12 @@ describe Walrat::Grammar do
       # if I catch these throws at the grammar level I can return nil
       # but note that the previous grammar returns an empty array, which to_s is just ""
       grammar = SkippingGrammar.new
-      lambda { grammar.parse('') }.should throw_symbol(:AndPredicateSuccess)
+      expect { grammar.parse('') }.to throw_symbol(:AndPredicateSuccess)
 
-      grammar.parse('foo').should == 'foo'
-      grammar.parse('foo bar').should == ['foo', 'bar']       # intervening whitespace
-      grammar.parse('foo bar     ').should == ['foo', 'bar']  # trailing whitespace
-      grammar.parse('     foo bar').should == ['foo', 'bar']  # leading whitespace
+      expect(grammar.parse('foo')).to eq('foo')
+      expect(grammar.parse('foo bar')).to eq(['foo', 'bar'])       # intervening whitespace
+      expect(grammar.parse('foo bar     ')).to eq(['foo', 'bar'])  # trailing whitespace
+      expect(grammar.parse('     foo bar')).to eq(['foo', 'bar'])  # leading whitespace
 
       # additional example, this time involving the ">>" pseudo-operator
       class SkippingAndMergingGrammar < Walrat::Grammar
@@ -386,19 +386,19 @@ describe Walrat::Grammar do
 
       # one word
       grammar = SkippingAndMergingGrammar.new
-      grammar.parse('foo').should == 'foo'
+      expect(grammar.parse('foo')).to eq('foo')
 
       # two words
-      grammar.parse('foo,bar').should == ['foo', 'bar']         # no whitespace
-      grammar.parse('foo, bar').should == ['foo', 'bar']        # whitespace after
-      grammar.parse('foo ,bar').should == ['foo', 'bar']        # whitespace before
-      grammar.parse('foo , bar').should == ['foo', 'bar']       # whitespace before and after
-      grammar.parse('foo , bar     ').should == ['foo', 'bar']  # trailing and embedded whitespace
-      grammar.parse('     foo , bar').should == ['foo', 'bar']  # leading and embedded whitespace
+      expect(grammar.parse('foo,bar')).to eq(['foo', 'bar'])         # no whitespace
+      expect(grammar.parse('foo, bar')).to eq(['foo', 'bar'])        # whitespace after
+      expect(grammar.parse('foo ,bar')).to eq(['foo', 'bar'])        # whitespace before
+      expect(grammar.parse('foo , bar')).to eq(['foo', 'bar'])       # whitespace before and after
+      expect(grammar.parse('foo , bar     ')).to eq(['foo', 'bar'])  # trailing and embedded whitespace
+      expect(grammar.parse('     foo , bar')).to eq(['foo', 'bar'])  # leading and embedded whitespace
 
       # three or four words
-      grammar.parse('foo , bar, baz').should == ['foo', 'bar', 'baz']
-      grammar.parse(' foo , bar, baz ,bin').should == ['foo', 'bar', 'baz', 'bin']
+      expect(grammar.parse('foo , bar, baz')).to eq(['foo', 'bar', 'baz'])
+      expect(grammar.parse(' foo , bar, baz ,bin')).to eq(['foo', 'bar', 'baz', 'bin'])
     end
 
     it 'should complain if trying to set default skipping parslet more than once' do
@@ -439,24 +439,24 @@ describe Walrat::Grammar do
 
       # words in word lists can be separated by whitespace or newlines
       grammar = OverrideDefaultSkippingParslet.new
-      grammar.parse('hello world').should ==  ['hello', 'world']
-      grammar.parse("hello\nworld").should == ['hello', 'world']
-      grammar.parse("hello world\nworld hello").should == ['hello', 'world', 'world', 'hello']
+      expect(grammar.parse('hello world')).to eq(['hello', 'world'])
+      expect(grammar.parse("hello\nworld")).to eq(['hello', 'world'])
+      expect(grammar.parse("hello world\nworld hello")).to eq(['hello', 'world', 'world', 'hello'])
 
       # numbers in number lists may be separated only by whitespace, not newlines
-      grammar.parse('123 456').should == ['123', '456']
-      grammar.parse("123\n456").should == ['123', '456'] # this succeeds because parser treats them as two separate number lists
-      grammar.parse("123 456\n456 123").should == [['123', '456'], ['456', '123']]
+      expect(grammar.parse('123 456')).to eq(['123', '456'])
+      expect(grammar.parse("123\n456")).to eq(['123', '456']) # this succeeds because parser treats them as two separate number lists
+      expect(grammar.parse("123 456\n456 123")).to eq([['123', '456'], ['456', '123']])
 
       # intermixing word lists and number lists
-      grammar.parse("bar\n123").should == ['bar', '123']
-      grammar.parse("123\n456\nbar").should == ['123', '456', 'bar']
+      expect(grammar.parse("bar\n123")).to eq(['bar', '123'])
+      expect(grammar.parse("123\n456\nbar")).to eq(['123', '456', 'bar'])
 
       # these were buggy at one point: "123\n456" was getting mashed into "123456" due to misguided use of String#delete! to delete first newline
-      grammar.parse("\n123\n456").should == ['123', '456']
-      grammar.parse("bar\n123\n456").should == ['bar', '123', '456']
-      grammar.parse("baz bar\n123\n456").should == [['baz', 'bar'], '123', '456']
-      grammar.parse("hello world\nfoo\n123 456 baz bar\n123\n456").should == [['hello', 'world', 'foo'], ['123', '456'], ['baz', 'bar'], '123', '456']
+      expect(grammar.parse("\n123\n456")).to eq(['123', '456'])
+      expect(grammar.parse("bar\n123\n456")).to eq(['bar', '123', '456'])
+      expect(grammar.parse("baz bar\n123\n456")).to eq([['baz', 'bar'], '123', '456'])
+      expect(grammar.parse("hello world\nfoo\n123 456 baz bar\n123\n456")).to eq([['hello', 'world', 'foo'], ['123', '456'], ['baz', 'bar'], '123', '456'])
     end
 
     it 'should complain if trying to override the default for the same rule twice' do
@@ -487,12 +487,12 @@ describe Walrat::Grammar do
       end
 
       grammar = NicePlayer.new
-      grammar.parse('hello world').should == 'hello'
-      grammar.parse('hello      world').should == 'hello'
-      grammar.parse('helloworld').should == 'hello'
-      lambda { grammar.parse('hello') }.should raise_error(Walrat::ParseError)
-      lambda { grammar.parse('hello buddy') }.should raise_error(Walrat::ParseError)
-      lambda { grammar.parse("hello\nbuddy") }.should raise_error(Walrat::ParseError)
+      expect(grammar.parse('hello world')).to eq('hello')
+      expect(grammar.parse('hello      world')).to eq('hello')
+      expect(grammar.parse('helloworld')).to eq('hello')
+      expect { grammar.parse('hello') }.to raise_error(Walrat::ParseError)
+      expect { grammar.parse('hello buddy') }.to raise_error(Walrat::ParseError)
+      expect { grammar.parse("hello\nbuddy") }.to raise_error(Walrat::ParseError)
 
       # example 2: word + predicate + other word
       class NicePlayer2 < Walrat::Grammar
@@ -503,12 +503,12 @@ describe Walrat::Grammar do
       end
 
       grammar = NicePlayer2.new
-      grammar.parse('hello world').should == ['hello', 'world']
-      grammar.parse('hello      world').should == ['hello', 'world']
-      grammar.parse('helloworld').should == ['hello', 'world']
-      lambda { grammar.parse('hello') }.should raise_error(Walrat::ParseError)
-      lambda { grammar.parse('hello buddy') }.should raise_error(Walrat::ParseError)
-      lambda { grammar.parse("hello\nbuddy") }.should raise_error(Walrat::ParseError)
+      expect(grammar.parse('hello world')).to eq(['hello', 'world'])
+      expect(grammar.parse('hello      world')).to eq(['hello', 'world'])
+      expect(grammar.parse('helloworld')).to eq(['hello', 'world'])
+      expect { grammar.parse('hello') }.to raise_error(Walrat::ParseError)
+      expect { grammar.parse('hello buddy') }.to raise_error(Walrat::ParseError)
+      expect { grammar.parse("hello\nbuddy") }.to raise_error(Walrat::ParseError)
     end
   end
 end

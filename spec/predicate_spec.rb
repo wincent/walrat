@@ -19,8 +19,8 @@ describe Walrat::Predicate do
   end
 
   it 'should be able to compare predicates for equality' do
-    Walrat::Predicate.new('foo').should eql(Walrat::Predicate.new('foo'))
-    Walrat::Predicate.new('foo').should_not eql(Walrat::Predicate.new('bar'))
+    expect(Walrat::Predicate.new('foo')).to eql(Walrat::Predicate.new('foo'))
+    expect(Walrat::Predicate.new('foo')).not_to eql(Walrat::Predicate.new('bar'))
   end
 
   it '"and" and "not" predicates should yield different hashes even if initialized with the same "parseable"' do
@@ -29,12 +29,12 @@ describe Walrat::Predicate do
     p2 = Walrat::AndPredicate.new(parseable)
     p3 = Walrat::NotPredicate.new(parseable)
 
-    p1.hash.should_not == p2.hash
-    p2.hash.should_not == p3.hash
-    p3.hash.should_not == p1.hash
+    expect(p1.hash).not_to eq(p2.hash)
+    expect(p2.hash).not_to eq(p3.hash)
+    expect(p3.hash).not_to eq(p1.hash)
 
-    p1.should_not eql(p2)
-    p2.should_not eql(p3)
-    p3.should_not eql(p1)
+    expect(p1).not_to eql(p2)
+    expect(p2).not_to eql(p3)
+    expect(p3).not_to eql(p1)
   end
 end

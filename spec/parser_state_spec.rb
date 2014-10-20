@@ -17,61 +17,61 @@ describe Walrat::ParserState do
   end
 
   it 'before parsing has started "remainder" should equal the entire string' do
-    @state.remainder.should == @base_string
+    expect(@state.remainder).to eq(@base_string)
   end
 
   it 'before parsing has started "remainder" should equal the entire string (when string is an empty string)' do
-    Walrat::ParserState.new('').remainder.should == ''
+    expect(Walrat::ParserState.new('').remainder).to eq('')
   end
 
   it 'before parsing has started "results" should be empty' do
-    @state.results.should be_empty
+    expect(@state.results).to be_empty
   end
 
   it '"parsed" should complain if passed nil' do
-    lambda { @state.parsed(nil) }.should raise_error(ArgumentError)
+    expect { @state.parsed(nil) }.to raise_error(ArgumentError)
   end
 
   it '"skipped" should complain if passed nil' do
-    lambda { @state.skipped(nil) }.should raise_error(ArgumentError)
+    expect { @state.skipped(nil) }.to raise_error(ArgumentError)
   end
 
   it '"parsed" should return the remainder of the string' do
-    @state.parsed('this is the ').should  == 'string to be parsed'
-    @state.parsed('string ').should       == 'to be parsed'
-    @state.parsed('to be parsed').should  == ''
+    expect(@state.parsed('this is the ')).to  eq('string to be parsed')
+    expect(@state.parsed('string ')).to       eq('to be parsed')
+    expect(@state.parsed('to be parsed')).to  eq('')
   end
 
   it '"skipped" should return the remainder of the string' do
-    @state.skipped('this is the ').should == 'string to be parsed'
-    @state.skipped('string ').should      == 'to be parsed'
-    @state.skipped('to be parsed').should == ''
+    expect(@state.skipped('this is the ')).to eq('string to be parsed')
+    expect(@state.skipped('string ')).to      eq('to be parsed')
+    expect(@state.skipped('to be parsed')).to eq('')
   end
 
   it '"results" should return an unwrapped parsed result (for single results)' do
     @state.parsed('this')
-    @state.results.should == 'this'
+    expect(@state.results).to eq('this')
   end
 
   it 'skipped substrings should not appear in "results"' do
     @state.skipped('this')
-    @state.results.should be_empty
+    expect(@state.results).to be_empty
   end
 
   it 'should return an array of the parsed results (for multiple results)' do
     @state.parsed('this ')
     @state.parsed('is ')
-    @state.results.should == ['this ', 'is ']
+    expect(@state.results).to eq(['this ', 'is '])
   end
 
   it 'should work when the entire string is consumed in a single operation (using "parsed")' do
-    @state.parsed(@base_string).should == ''
-    @state.results.should == @base_string
+    expect(@state.parsed(@base_string)).to eq('')
+    expect(@state.results).to eq(@base_string)
   end
 
   it 'should work when the entire string is consumed in a single operation (using "skipped")' do
-    @state.skipped(@base_string).should == ''
-    @state.results.should be_empty
+    expect(@state.skipped(@base_string)).to eq('')
+    expect(@state.results).to be_empty
   end
 
   it '"parsed" should complain if passed something that doesn\'t respond to the "line_end" and "column_end" messages' do
@@ -100,55 +100,55 @@ describe Walrat::ParserState do
 
   it 'should be able to mix use of "parsed" and "skipped" methods' do
     # first example
-    @state.skipped('this is the ').should  == 'string to be parsed'
-    @state.results.should be_empty
-    @state.parsed('string ').should       == 'to be parsed'
-    @state.results.should == 'string '
-    @state.skipped('to be parsed').should  == ''
-    @state.results.should == 'string '
+    expect(@state.skipped('this is the ')).to  eq('string to be parsed')
+    expect(@state.results).to be_empty
+    expect(@state.parsed('string ')).to       eq('to be parsed')
+    expect(@state.results).to eq('string ')
+    expect(@state.skipped('to be parsed')).to  eq('')
+    expect(@state.results).to eq('string ')
 
     # second example (add this test to isolate a bug in another specification)
     state = Walrat::ParserState.new('foo1...')
-    state.skipped('foo').should == '1...'
-    state.remainder.should == '1...'
-    state.results.should be_empty
-    state.parsed('1').should == '...'
-    state.remainder.should == '...'
-    state.results.should == '1'
+    expect(state.skipped('foo')).to eq('1...')
+    expect(state.remainder).to eq('1...')
+    expect(state.results).to be_empty
+    expect(state.parsed('1')).to eq('...')
+    expect(state.remainder).to eq('...')
+    expect(state.results).to eq('1')
   end
 
   it '"parsed" and "results" methods should work with multi-byte Unicode strings' do
     # basic test
     state = Walrat::ParserState.new('400€, foo')
-    state.remainder.should == '400€, foo'
-    state.parsed('40').should == '0€, foo'
-    state.results.should == '40'
-    state.parsed('0€, ').should == 'foo'
-    state.results.should == ['40', '0€, ']
-    state.parsed('foo').should == ''
-    state.results.should == ['40', '0€, ', 'foo']
+    expect(state.remainder).to eq('400€, foo')
+    expect(state.parsed('40')).to eq('0€, foo')
+    expect(state.results).to eq('40')
+    expect(state.parsed('0€, ')).to eq('foo')
+    expect(state.results).to eq(['40', '0€, '])
+    expect(state.parsed('foo')).to eq('')
+    expect(state.results).to eq(['40', '0€, ', 'foo'])
 
     # test with newlines before and after multi-byte chars
     state = Walrat::ParserState.new("400\n or more €...\nfoo")
-    state.remainder.should == "400\n or more €...\nfoo"
-    state.parsed("400\n or more").should == " €...\nfoo"
-    state.results.should == "400\n or more"
-    state.parsed(' €..').should == ".\nfoo"
-    state.results.should == ["400\n or more", ' €..']
-    state.parsed(".\nfoo").should == ''
-    state.results.should == ["400\n or more", ' €..', ".\nfoo"]
+    expect(state.remainder).to eq("400\n or more €...\nfoo")
+    expect(state.parsed("400\n or more")).to eq(" €...\nfoo")
+    expect(state.results).to eq("400\n or more")
+    expect(state.parsed(' €..')).to eq(".\nfoo")
+    expect(state.results).to eq(["400\n or more", ' €..'])
+    expect(state.parsed(".\nfoo")).to eq('')
+    expect(state.results).to eq(["400\n or more", ' €..', ".\nfoo"])
   end
 
   it '"skipped" and "results" methods should work with multi-byte Unicode strings' do
     state = Walrat::ParserState.new('400€, foo')
-    state.remainder.should == '400€, foo'
-    state.skipped('4').should == '00€, foo'
-    state.results.should be_empty
-    state.parsed('0').should == '0€, foo'
-    state.results.should == '0'
-    state.skipped('0€, ').should == 'foo'
-    state.results.should == '0'
-    state.parsed('foo').should == ''
-    state.results.should == ['0', 'foo']
+    expect(state.remainder).to eq('400€, foo')
+    expect(state.skipped('4')).to eq('00€, foo')
+    expect(state.results).to be_empty
+    expect(state.parsed('0')).to eq('0€, foo')
+    expect(state.results).to eq('0')
+    expect(state.skipped('0€, ')).to eq('foo')
+    expect(state.results).to eq('0')
+    expect(state.parsed('foo')).to eq('')
+    expect(state.results).to eq(['0', 'foo'])
   end
 end

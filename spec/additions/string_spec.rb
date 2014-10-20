@@ -7,19 +7,19 @@ require 'spec_helper'
 describe String do
   describe '#to_class_name' do
     it 'works with require names' do
-      'foo_bar'.to_class_name.should == 'FooBar'
+      expect('foo_bar'.to_class_name).to eq('FooBar')
     end
 
     it 'works with a single-letter' do
-      'f'.to_class_name.should == 'F'
+      expect('f'.to_class_name).to eq('F')
     end
 
     it 'works with double-underscores' do
-      'foo__bar'.to_class_name.should == 'FooBar'
+      expect('foo__bar'.to_class_name).to eq('FooBar')
     end
 
     it 'works with terminating double-underscores' do
-      'foo__'.to_class_name.should == 'Foo'
+      expect('foo__'.to_class_name).to eq('Foo')
     end
   end
 end
@@ -30,8 +30,8 @@ describe 'iterating over a string' do
   it 'should be able to iterate over strings containing newlines' do
     chars = []
     "hello\nworld".each_char { |c| chars << c }
-    chars.should == ['h', 'e', 'l', 'l', 'o', "\n",
-      'w', 'o', 'r', 'l', 'd']
+    expect(chars).to eq(['h', 'e', 'l', 'l', 'o', "\n",
+      'w', 'o', 'r', 'l', 'd'])
   end
 end
 
@@ -44,27 +44,27 @@ describe 'working with Unicode strings' do
   it 'the "each_char" method should work with multibyte characters' do
     chars = []
     @string.each_char { |c| chars << c }
-    chars.should == ['U', 'n', 'i', 'c', 'o', 'd', 'e', ' ', '€', '!']
+    expect(chars).to eq(['U', 'n', 'i', 'c', 'o', 'd', 'e', ' ', '€', '!'])
   end
 
   it 'the "chars" method should work with multibyte characters' do
-    @string.chars.to_a.should == ['U', 'n', 'i', 'c', 'o', 'd', 'e', ' ', '€', '!']
+    expect(@string.chars.to_a).to eq(['U', 'n', 'i', 'c', 'o', 'd', 'e', ' ', '€', '!'])
   end
 
   it 'should be able to use "enumerator" convenience method to get a string enumerator' do
     enumerator = 'hello€'.enumerator
-    enumerator.next.should == 'h'
-    enumerator.next.should == 'e'
-    enumerator.next.should == 'l'
-    enumerator.next.should == 'l'
-    enumerator.next.should == 'o'
-    enumerator.next.should == '€'
-    enumerator.next.should be_nil
+    expect(enumerator.next).to eq('h')
+    expect(enumerator.next).to eq('e')
+    expect(enumerator.next).to eq('l')
+    expect(enumerator.next).to eq('l')
+    expect(enumerator.next).to eq('o')
+    expect(enumerator.next).to eq('€')
+    expect(enumerator.next).to be_nil
   end
 
   it 'the "jlength" method should correctly report the number of characters in a string' do
-    @string.jlength.should  == 10
-    "€".jlength.should      == 1  # three bytes long, but one character
+    expect(@string.jlength).to  eq(10)
+    expect("€".jlength).to      eq(1)  # three bytes long, but one character
   end
 end
 
@@ -73,21 +73,21 @@ end
 describe 'using shorthand to get StringParslets from String instances' do
   it 'chaining two Strings with the "&" operator should yield a two-element sequence' do
     sequence = 'foo' & 'bar'
-    sequence.parse('foobar').should == ['foo', 'bar']
-    lambda { sequence.parse('no match') }.should raise_error(Walrat::ParseError)
+    expect(sequence.parse('foobar')).to eq(['foo', 'bar'])
+    expect { sequence.parse('no match') }.to raise_error(Walrat::ParseError)
   end
 
   it 'chaining three Strings with the "&" operator should yield a three-element sequence' do
     sequence = 'foo' & 'bar' & '...'
-    sequence.parse('foobar...').should == ['foo', 'bar', '...']
-    lambda { sequence.parse('no match') }.should raise_error(Walrat::ParseError)
+    expect(sequence.parse('foobar...')).to eq(['foo', 'bar', '...'])
+    expect { sequence.parse('no match') }.to raise_error(Walrat::ParseError)
   end
 
   it 'alternating two Strings with the "|" operator should yield a single string' do
     sequence = 'foo' | 'bar'
-    sequence.parse('foo').should == 'foo'
-    sequence.parse('foobar').should == 'foo'
-    sequence.parse('bar').should == 'bar'
-    lambda { sequence.parse('no match') }.should raise_error(Walrat::ParseError)
+    expect(sequence.parse('foo')).to eq('foo')
+    expect(sequence.parse('foobar')).to eq('foo')
+    expect(sequence.parse('bar')).to eq('bar')
+    expect { sequence.parse('no match') }.to raise_error(Walrat::ParseError)
   end
 end

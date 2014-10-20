@@ -27,9 +27,9 @@ describe Walrat::ParsletRepetition do
     expect do
       parslet.parse 'bar'
     end.to throw_symbol(:ZeroWidthParseSuccess)                   # zero times
-    parslet.parse('foo').should == 'foo'                          # one time
-    parslet.parse('foofoo').should == ['foo', 'foo']              # two times
-    parslet.parse('foofoofoobar').should == ['foo', 'foo', 'foo'] # three times
+    expect(parslet.parse('foo')).to eq('foo')                          # one time
+    expect(parslet.parse('foofoo')).to eq(['foo', 'foo'])              # two times
+    expect(parslet.parse('foofoofoobar')).to eq(['foo', 'foo', 'foo']) # three times
   end
 
   it 'should be able to match "zero or one" times (like "?" in regular expressions)' do
@@ -37,8 +37,8 @@ describe Walrat::ParsletRepetition do
     expect do
       parslet.parse 'bar'
     end.to throw_symbol(:ZeroWidthParseSuccess) # zero times
-    parslet.parse('foo').should == 'foo'        # one time
-    parslet.parse('foofoo').should == 'foo'     # stop at one time
+    expect(parslet.parse('foo')).to eq('foo')        # one time
+    expect(parslet.parse('foofoo')).to eq('foo')     # stop at one time
   end
 
   it 'should be able to match "one or more" times (like "+" in regular expressions)' do
@@ -46,9 +46,9 @@ describe Walrat::ParsletRepetition do
     expect do
       parslet.parse 'bar'
     end.to raise_error(Walrat::ParseError)                        # zero times (error)
-    parslet.parse('foo').should == 'foo'                          # one time
-    parslet.parse('foofoo').should == ['foo', 'foo']              # two times
-    parslet.parse('foofoofoobar').should == ['foo', 'foo', 'foo'] # three times
+    expect(parslet.parse('foo')).to eq('foo')                          # one time
+    expect(parslet.parse('foofoo')).to eq(['foo', 'foo'])              # two times
+    expect(parslet.parse('foofoofoobar')).to eq(['foo', 'foo', 'foo']) # three times
   end
 
   it 'should be able to match "between X and Y" times (like {X, Y} in regular expressions)' do
@@ -59,9 +59,9 @@ describe Walrat::ParsletRepetition do
     expect do
       parslet.parse 'foo'
     end.to raise_error(Walrat::ParseError)                        # one time (error)
-    parslet.parse('foofoo').should == ['foo', 'foo']              # two times
-    parslet.parse('foofoofoo').should == ['foo', 'foo', 'foo']    # three times
-    parslet.parse('foofoofoofoo').should == ['foo', 'foo', 'foo'] # stop at three times
+    expect(parslet.parse('foofoo')).to eq(['foo', 'foo'])              # two times
+    expect(parslet.parse('foofoofoo')).to eq(['foo', 'foo', 'foo'])    # three times
+    expect(parslet.parse('foofoofoofoo')).to eq(['foo', 'foo', 'foo']) # stop at three times
   end
 
   it 'matches should be greedy' do
@@ -74,11 +74,11 @@ describe Walrat::ParsletRepetition do
   end
 
   it 'should be able to compare for equality' do
-    Walrat::ParsletRepetition.new('foo'.to_parseable, 1).
-      should eql(Walrat::ParsletRepetition.new('foo'.to_parseable, 1))
-    Walrat::ParsletRepetition.new('foo'.to_parseable, 1).
-      should_not eql(Walrat::ParsletRepetition.new('bar'.to_parseable, 1))
-    Walrat::ParsletRepetition.new('foo'.to_parseable, 1).
-      should_not eql(Walrat::ParsletRepetition.new('foo'.to_parseable, 2))
+    expect(Walrat::ParsletRepetition.new('foo'.to_parseable, 1)).
+      to eql(Walrat::ParsletRepetition.new('foo'.to_parseable, 1))
+    expect(Walrat::ParsletRepetition.new('foo'.to_parseable, 1)).
+      not_to eql(Walrat::ParsletRepetition.new('bar'.to_parseable, 1))
+    expect(Walrat::ParsletRepetition.new('foo'.to_parseable, 1)).
+      not_to eql(Walrat::ParsletRepetition.new('foo'.to_parseable, 2))
   end
 end

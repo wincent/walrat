@@ -34,7 +34,7 @@ describe Walrat::ParsletOmission do
     rescue Walrat::SkippedSubstringException => e
       substring = e.to_s
     end
-    substring.should == 'foo'
+    expect(substring).to eq('foo')
   end
 
   specify 'the parsed substring is an an empty string in the case of a zero-width parse success at a lower level' do
@@ -43,13 +43,13 @@ describe Walrat::ParsletOmission do
     rescue Walrat::SkippedSubstringException => e
       substring = e.to_s
     end
-    substring.should == ''
+    expect(substring).to eq('')
   end
 
   it 'can be compared for equality' do
-    Walrat::ParsletOmission.new('foo').
-      should eql(Walrat::ParsletOmission.new('foo'))
-    Walrat::ParsletOmission.new('foo').
-      should_not eql(Walrat::ParsletOmission.new('bar'))
+    expect(Walrat::ParsletOmission.new('foo')).
+      to eql(Walrat::ParsletOmission.new('foo'))
+    expect(Walrat::ParsletOmission.new('foo')).
+      not_to eql(Walrat::ParsletOmission.new('bar'))
   end
 end

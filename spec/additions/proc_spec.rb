@@ -6,7 +6,7 @@ require 'spec_helper'
 describe 'proc additions' do
   it 'responds to "to_parseable", "parse" and "memoizing_parse"' do
     proc = lambda { |string, options| 'foo' }.to_parseable
-    proc.parse('bar').should == 'foo'
-    proc.memoizing_parse('bar').should == 'foo'
+    expect(proc.parse('bar')).to eq('foo')
+    expect(proc.memoizing_parse('bar')).to eq('foo')
   end
 end
