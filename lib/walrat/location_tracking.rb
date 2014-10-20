@@ -93,14 +93,12 @@ module Walrat
     # true if the receiver is rightmost or equal.
     # If the other object is farther to the right returns false.
     def rightmost? other
-      if self.line_end > other.line_end
+      if line_end > other.line_end
         true
-      elsif other.line_end > self.line_end
+      elsif other.line_end > line_end
         false
-      elsif self.column_end >= other.column_end
-        true
       else
-        false
+        column_end >= other.column_end
       end
     end
   end # module LocationTracking
