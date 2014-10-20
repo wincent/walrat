@@ -31,7 +31,7 @@ module Walrat
       results.each { |result| attr_reader result }
 
       # set up initializer
-      initialize_body = "def initialize #{results.map { |symbol| symbol.to_s}.join(', ')}\n"
+      initialize_body = "def initialize #{results.map { |symbol| symbol.to_s }.join(', ')}\n"
       initialize_body << %Q{  @string_value = ""\n}
       results.each do |result|
         initialize_body << "  @#{result} = #{result}\n"
