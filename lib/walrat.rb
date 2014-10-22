@@ -1,8 +1,7 @@
 # Copyright 2007-2014 Greg Hurrell. All rights reserved.
 # Licensed under the terms of the BSD 2-clause license.
 
-# Ruby 1.9 support
-require 'continuation' unless Kernel.respond_to?(:callcc)
+require 'continuation'
 
 module Walrat
   major, minor = RUBY_VERSION.split '.'
