@@ -5,7 +5,7 @@ require 'walrat'
 
 module Walrat
   class StringResult < String
-    include Walrat::LocationTracking
+    include LocationTracking
 
     def initialize string = ""
       self.source_text = string
