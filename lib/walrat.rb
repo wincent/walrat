@@ -4,11 +4,6 @@
 require 'continuation'
 
 module Walrat
-  major, minor = RUBY_VERSION.split '.'
-  if major == '1' and minor == '8'
-    $KCODE  = 'U' # UTF-8 (necessary for Unicode support)
-  end
-
   autoload :AndPredicate,                 'walrat/and_predicate'
   autoload :ArrayResult,                  'walrat/array_result'
   autoload :ContinuationWrapperException, 'walrat/continuation_wrapper_exception'

@@ -6,7 +6,6 @@ require 'walrat'
 
 module Walrat
   # Unicode-aware (UTF-8) string enumerator.
-  # For Unicode support $KCODE must be set to 'U' (UTF-8).
   class StringEnumerator
     # Returns the char most recently scanned before the last "next" call, or
     # nil if nothing previously scanned.
@@ -19,7 +18,6 @@ module Walrat
       @last     = nil
     end
 
-    # This method will only work as expected if $KCODE is set to 'U' (UTF-8).
     def next
       @last     = @current
       @current  = @scanner.scan(/./m) # must use multiline mode or "." won't match newlines
