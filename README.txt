@@ -90,10 +90,9 @@ The official Git repository can be browsed at:
 
   http://git.wincent.com/walrat.git
 
-The repository is mirrored hourly to GitHub and Gitorious:
+The repository is mirrored hourly to GitHub:
 
   http://github.com/wincent/walrat
-  http://gitorious.org/walrat/walrat
 
 
 == Author ==
