@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.name                  = 'walrat'
   s.platform              = Gem::Platform::RUBY
   s.require_paths         = ['lib']
-  s.required_ruby_version = '~> 2.1'
+  s.required_ruby_version = '>= 3.0'
   s.rubyforge_project     = 'walrus'
   s.summary               = 'Object-oriented templating system'
   s.version               = Walrat::VERSION
