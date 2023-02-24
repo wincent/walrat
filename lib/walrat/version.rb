@@ -1,7 +1,7 @@
-# Copyright 2007-2014 Greg Hurrell. All rights reserved.
+# Copyright 2007-present Greg Hurrell. All rights reserved.
 # Licensed under the terms of the BSD 2-clause license.
 
 module Walrat
-  VERSION   = '0.2'
-  COPYRIGHT = 'Copyright 2007-2014 Greg Hurrell'
+  VERSION   = '0.3.pre'
+  COPYRIGHT = 'Copyright 2007-present Greg Hurrell'
 end # module Walrat
