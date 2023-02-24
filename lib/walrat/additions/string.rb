@@ -43,19 +43,6 @@ class String
     i ? unpack('C*')[0...i].pack('C*').chars.to_a.length : nil
   end
 
-  # multi-byte friendly [] implementation
-  def [](range, other = Walrat::NoParameterMarker.instance)
-    if other == Walrat::NoParameterMarker.instance
-      if range.kind_of? Range
-        chars.to_a[range].join
-      else
-        old_range range
-      end
-    else
-      old_range range, other
-    end
-  end
-
   # Returns a character-level enumerator for the receiver.
   def enumerator
     Walrat::StringEnumerator.new self
