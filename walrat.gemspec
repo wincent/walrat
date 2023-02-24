@@ -6,8 +6,8 @@ require File.expand_path('lib/walrat/version.rb', File.dirname(__FILE__))
 Gem::Specification.new do |s|
   s.author                = 'Greg Hurrell'
   s.email                 = 'greg@hurrell.net'
-  s.has_rdoc              = true
   s.homepage              = 'https://wincent.com/products/walrat'
+  s.licenses              = ['BSD-2-Clause']
   s.name                  = 'walrat'
   s.platform              = Gem::Platform::RUBY
   s.require_paths         = ['lib']
@@ -24,5 +24,5 @@ Gem::Specification.new do |s|
   # TODO: add 'docs' subdirectory, 'README.txt' when they're done
   s.files             = Dir['lib/**/*.rb']
   s.add_development_dependency 'rspec', '~> 3.1'
-  s.add_development_dependency 'yard'
+  s.add_development_dependency 'yard', '~> 0.5.8'
 end
