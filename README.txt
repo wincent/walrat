@@ -74,7 +74,7 @@ the Walrus grammar) have already been successfully tested.
 
 == Development ==
 
-    $ git clone git://git.wincent.com/walrat.git
+    $ git clone git://git.wincent.dev/walrat.git
     $ cd walrat
     $ bundle install --binstubs
     $ bin/spec spec
@@ -82,17 +82,9 @@ the Walrus grammar) have already been successfully tested.
 
 == Website ==
 
-The official website can be found at:
-
-  https://wincent.com/products/walrat
-
 The official Git repository can be browsed at:
 
-  http://git.wincent.com/walrat.git
-
-The repository is mirrored hourly to GitHub:
-
-  http://github.com/wincent/walrat
+  https://github.com/wincent/walrat
 
 
 == Author ==

@@ -1,4 +1,4 @@
-# Copyright 2007-2014 Greg Hurrell. All rights reserved.
+# Copyright 2007-present Greg Hurrell. All rights reserved.
 # Licensed under the terms of the BSD 2-clause license.
 
 require File.expand_path('lib/walrat/version.rb', File.dirname(__FILE__))
@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.author                = 'Greg Hurrell'
   s.email                 = 'greg@hurrell.net'
   s.has_rdoc              = true
-  s.homepage              = 'https://wincent.com/products/walrat'
+  s.homepage              = 'https://github.com/wincent/walrat'
   s.name                  = 'walrat'
   s.platform              = Gem::Platform::RUBY
   s.require_paths         = ['lib']
